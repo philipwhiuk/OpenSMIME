@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="de.fau.cs.mad.smile.android.encryption" >
+    package="com.whiuk.philip.opensmime" >
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -73,7 +73,7 @@
         </activity>
         <activity
             android:name=".ui.activity.CertificateCreationActivity"
-            android:label="@string/title_activity_certificate_ceration" >
+            android:label="@string/title_activity_certificate_creation" >
         </activity>
     </application>
 
