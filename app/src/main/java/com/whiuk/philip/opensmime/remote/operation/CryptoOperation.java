@@ -30,7 +30,7 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import com.whiuk.philip.opensmime.App;
-import com.whiuk.philip.opensmime.SMileCrypto;
+import com.whiuk.philip.opensmime.OpenSMIME;
 import com.whiuk.philip.opensmime.crypto.CryptoParams;
 import com.whiuk.philip.opensmime.crypto.CryptoParamsLoaderTask;
 import com.whiuk.philip.opensmime.crypto.KeyManagement;
@@ -133,8 +133,8 @@ public abstract class CryptoOperation<T> implements Closeable {
     public abstract void execute() throws MessagingException, IOException, GeneralSecurityException, OperatorCreationException, SMIMEException, CMSException, CertPathReviewerException, ExecutionException, InterruptedException;
 
     protected void copyHeaders(MimeMessage source, MimeMessage target) throws MessagingException {
-        Log.d(SMileCrypto.LOG_TAG, "source message: " + source);
-        Log.d(SMileCrypto.LOG_TAG, "target message: " + target);
+        Log.d(OpenSMIME.LOG_TAG, "source message: " + source);
+        Log.d(OpenSMIME.LOG_TAG, "target message: " + target);
 
         Enumeration enumeration = source.getAllHeaderLines();
         while (enumeration.hasMoreElements()) {

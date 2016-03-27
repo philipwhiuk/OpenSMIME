@@ -18,7 +18,7 @@ import java.security.cert.X509Certificate;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-import com.whiuk.philip.opensmime.SMileCrypto;
+import com.whiuk.philip.opensmime.OpenSMIME;
 import korex.mail.internet.MimeBodyPart;
 import korex.mail.internet.MimeMessage;
 
@@ -34,16 +34,16 @@ public class EncryptMail {
     public MimeMessage encryptMessage(MimeMessage message, List<X509Certificate> certificate) {
         try {
             if (message == null) {
-                SMileCrypto.EXIT_STATUS = SMileCrypto.STATUS_INVALID_PARAMETER;
+                OpenSMIME.EXIT_STATUS = OpenSMIME.STATUS_INVALID_PARAMETER;
                 return null;
             }
 
             return new AsyncEncryptMessage(message, certificate).execute().get();
         } catch (Exception e) {
-            if(SMileCrypto.isDEBUG()) {
-                Log.e(SMileCrypto.LOG_TAG, "Exception in encryptMessage: " + e.getMessage());
+            if(OpenSMIME.isDEBUG()) {
+                Log.e(OpenSMIME.LOG_TAG, "Exception in encryptMessage: " + e.getMessage());
             }
-            SMileCrypto.EXIT_STATUS = SMileCrypto.STATUS_ERROR_ASYNC_TASK;
+            OpenSMIME.EXIT_STATUS = OpenSMIME.STATUS_ERROR_ASYNC_TASK;
             return null;
         }
     }
@@ -83,11 +83,11 @@ public class EncryptMail {
 
                 return envelopedGenerator.generate(bodyPart, encryptor);
             } catch (Exception e) {
-                if(SMileCrypto.isDEBUG()) {
-                    Log.e(SMileCrypto.LOG_TAG, "Exception while encrypting MimeBodyPart: " + e.getMessage());
+                if(OpenSMIME.isDEBUG()) {
+                    Log.e(OpenSMIME.LOG_TAG, "Exception while encrypting MimeBodyPart: " + e.getMessage());
                 }
                 e.printStackTrace();
-                SMileCrypto.EXIT_STATUS = SMileCrypto.STATUS_UNKNOWN_ERROR;
+                OpenSMIME.EXIT_STATUS = OpenSMIME.STATUS_UNKNOWN_ERROR;
                 return null;
             }
         }

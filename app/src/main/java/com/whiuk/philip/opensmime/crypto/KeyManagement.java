@@ -41,7 +41,7 @@ import java.util.List;
 import com.whiuk.philip.opensmime.App;
 import com.whiuk.philip.opensmime.KeyInfo;
 import com.whiuk.philip.opensmime.R;
-import com.whiuk.philip.opensmime.SMileCrypto;
+import com.whiuk.philip.opensmime.OpenSMIME;
 import korex.mail.Address;
 import korex.mail.internet.InternetAddress;
 
@@ -88,8 +88,8 @@ public class KeyManagement {
         try {
             addKeyInfo(new_alias);
         } catch (KeyStoreException | CertificateParsingException | NoSuchAlgorithmException | CertificateEncodingException e) {
-            if(SMileCrypto.isDEBUG()) {
-                Log.d(SMileCrypto.LOG_TAG, "Error while adding certificate. " + e.getMessage());
+            if(OpenSMIME.isDEBUG()) {
+                Log.d(OpenSMIME.LOG_TAG, "Error while adding certificate. " + e.getMessage());
             }
             return false;
         }
@@ -106,8 +106,8 @@ public class KeyManagement {
             ks.store(fos, password);
             fos.close();
         } catch (KeyStoreException | CertificateException | NoSuchAlgorithmException | IOException e) {
-            if(SMileCrypto.isDEBUG()) {
-                Log.d(SMileCrypto.LOG_TAG, "Error writing certificate´to internal storage. " + e.getMessage());
+            if(OpenSMIME.isDEBUG()) {
+                Log.d(OpenSMIME.LOG_TAG, "Error writing certificate´to internal storage. " + e.getMessage());
             }
             return false;
         }
@@ -128,10 +128,10 @@ public class KeyManagement {
                 }
 
                 X509Certificate certificate = (X509Certificate) keyFileStore.getCertificate(alias);
-                if(SMileCrypto.isDEBUG()) {
-                    Log.d(SMileCrypto.LOG_TAG, "Found certificate with alias: " + alias);
-                    Log.d(SMileCrypto.LOG_TAG, "· SubjectDN: " + certificate.getSubjectDN().getName());
-                    Log.d(SMileCrypto.LOG_TAG, "· IssuerDN: " + certificate.getIssuerDN().getName());
+                if(OpenSMIME.isDEBUG()) {
+                    Log.d(OpenSMIME.LOG_TAG, "Found certificate with alias: " + alias);
+                    Log.d(OpenSMIME.LOG_TAG, "· SubjectDN: " + certificate.getSubjectDN().getName());
+                    Log.d(OpenSMIME.LOG_TAG, "· IssuerDN: " + certificate.getIssuerDN().getName());
                 }
 
                 // TODO: collect certificate chain and store
@@ -148,8 +148,8 @@ public class KeyManagement {
             }
             return true;
         } catch (Exception e) {
-            if(SMileCrypto.isDEBUG()) {
-                Log.e(SMileCrypto.LOG_TAG, "Error while loading keyStore: " + e.getMessage());
+            if(OpenSMIME.isDEBUG()) {
+                Log.e(OpenSMIME.LOG_TAG, "Error while loading keyStore: " + e.getMessage());
             }
             return false;
         }
@@ -168,10 +168,10 @@ public class KeyManagement {
                 }
 
                 X509Certificate certificate = (X509Certificate) keyFileStore.getCertificate(alias);
-                if(SMileCrypto.isDEBUG()) {
-                    Log.d(SMileCrypto.LOG_TAG, "Found certificate with alias: " + alias);
-                    Log.d(SMileCrypto.LOG_TAG, "· SubjectDN: " + certificate.getSubjectDN().getName());
-                    Log.d(SMileCrypto.LOG_TAG, "· IssuerDN: " + certificate.getIssuerDN().getName());
+                if(OpenSMIME.isDEBUG()) {
+                    Log.d(OpenSMIME.LOG_TAG, "Found certificate with alias: " + alias);
+                    Log.d(OpenSMIME.LOG_TAG, "· SubjectDN: " + certificate.getSubjectDN().getName());
+                    Log.d(OpenSMIME.LOG_TAG, "· IssuerDN: " + certificate.getIssuerDN().getName());
                 }
 
                 // TODO: collect certificate chain and store
@@ -188,8 +188,8 @@ public class KeyManagement {
             }
             return true;
         } catch (Exception e) {
-            if(SMileCrypto.isDEBUG()) {
-                Log.e(SMileCrypto.LOG_TAG, "Error while loading keyStore: " + e.getMessage());
+            if(OpenSMIME.isDEBUG()) {
+                Log.e(OpenSMIME.LOG_TAG, "Error while loading keyStore: " + e.getMessage());
             }
             return false;
         }
@@ -210,32 +210,32 @@ public class KeyManagement {
         try {
             String thumbprint = getThumbprint(certificate);
             String alias = "SMile_crypto_other_" + thumbprint;
-            if(SMileCrypto.isDEBUG()) {
-                Log.d(SMileCrypto.LOG_TAG, "Check whether certificate is stored for alias: " + alias);
+            if(OpenSMIME.isDEBUG()) {
+                Log.d(OpenSMIME.LOG_TAG, "Check whether certificate is stored for alias: " + alias);
             }
 
             //Check whether cert is already there
             if (androidKeyStore.containsAlias(alias)) {
-                SMileCrypto.EXIT_STATUS = SMileCrypto.STATUS_CERTIFICATE_ALREADY_IMPORTED;
+                OpenSMIME.EXIT_STATUS = OpenSMIME.STATUS_CERTIFICATE_ALREADY_IMPORTED;
                 return true;
             }
 
             //Check whether cert is already there because it's our own (= have private key)
             if (androidKeyStore.containsAlias("SMile_crypto_own_" + thumbprint)) {
-                SMileCrypto.EXIT_STATUS = SMileCrypto.STATUS_CERTIFICATE_ALREADY_IMPORTED;
+                OpenSMIME.EXIT_STATUS = OpenSMIME.STATUS_CERTIFICATE_ALREADY_IMPORTED;
                 return true;
             }
 
-            if(SMileCrypto.isDEBUG()) {
-                Log.d(SMileCrypto.LOG_TAG, "Alias is not there, import new certificate without private key.");
+            if(OpenSMIME.isDEBUG()) {
+                Log.d(OpenSMIME.LOG_TAG, "Alias is not there, import new certificate without private key.");
             }
             androidKeyStore.setCertificateEntry(alias, certificate);
             addKeyInfo(alias);
 
             return androidKeyStore.containsAlias(alias);
         } catch (Exception e) {
-            if(SMileCrypto.isDEBUG()) {
-                Log.e(SMileCrypto.LOG_TAG, "Error in x: " + e.getMessage());
+            if(OpenSMIME.isDEBUG()) {
+                Log.e(OpenSMIME.LOG_TAG, "Error in x: " + e.getMessage());
             }
             return false;
         }
@@ -265,15 +265,15 @@ public class KeyManagement {
 
     private void loadCertificates() {
         try {
-            if(SMileCrypto.isDEBUG()) {
-                Log.d(SMileCrypto.LOG_TAG, "Find all own certificates…");
+            if(OpenSMIME.isDEBUG()) {
+                Log.d(OpenSMIME.LOG_TAG, "Find all own certificates…");
             }
 
             Enumeration e = androidKeyStore.aliases();
             while (e.hasMoreElements()) {
                 String alias = (String) e.nextElement();
-                if(SMileCrypto.isDEBUG()) {
-                    Log.d(SMileCrypto.LOG_TAG, "Found certificate with alias: " + alias);
+                if(OpenSMIME.isDEBUG()) {
+                    Log.d(OpenSMIME.LOG_TAG, "Found certificate with alias: " + alias);
                 }
                 if (alias.equals(App.getContext().getString(R.string.smile_save_passphrases_certificate_alias))) {
                     continue;
@@ -282,8 +282,8 @@ public class KeyManagement {
                 addKeyInfo(alias);
             }
         } catch (Exception e) {
-            if(SMileCrypto.isDEBUG()) {
-                Log.e(SMileCrypto.LOG_TAG, "Error while finding certificate: " + e.getMessage());
+            if(OpenSMIME.isDEBUG()) {
+                Log.e(OpenSMIME.LOG_TAG, "Error while finding certificate: " + e.getMessage());
             }
             e.printStackTrace();
         }
@@ -304,13 +304,13 @@ public class KeyManagement {
 
         KeyStore p12 = KeyStore.getInstance("pkcs12");
         String pathTop12File = FilenameUtils.concat(certificateDirectory, alias + ".p12");
-        if(SMileCrypto.isDEBUG()) {
-            Log.d(SMileCrypto.LOG_TAG, "certificate file path: " + pathTop12File);
+        if(OpenSMIME.isDEBUG()) {
+            Log.d(OpenSMIME.LOG_TAG, "certificate file path: " + pathTop12File);
         }
         File p12File = new File(pathTop12File);
 
         if (!p12File.exists()) {
-            SMileCrypto.EXIT_STATUS = SMileCrypto.STATUS_INVALID_CERTIFICATE_STORED;
+            OpenSMIME.EXIT_STATUS = OpenSMIME.STATUS_INVALID_CERTIFICATE_STORED;
             return null;
         }
 
@@ -325,10 +325,10 @@ public class KeyManagement {
                 }
             }
         } catch (Exception e) {
-            if(SMileCrypto.isDEBUG()) {
-                Log.e(SMileCrypto.LOG_TAG, "Error, probably wrong passphrase: " + e.getMessage());
+            if(OpenSMIME.isDEBUG()) {
+                Log.e(OpenSMIME.LOG_TAG, "Error, probably wrong passphrase: " + e.getMessage());
             }
-            SMileCrypto.EXIT_STATUS = SMileCrypto.STATUS_WRONG_PASSPHRASE;
+            OpenSMIME.EXIT_STATUS = OpenSMIME.STATUS_WRONG_PASSPHRASE;
             return null;
         }
 
@@ -340,18 +340,18 @@ public class KeyManagement {
 
         if (preferences.contains(alias + "-passphrase")) {
             String encryptedPassphrase = preferences.getString(alias + "-passphrase", null);
-            if(SMileCrypto.isDEBUG()) {
-                //Log.d(SMileCrypto.LOG_TAG, "Passphrase: " + encryptedPassphrase);
-                Log.d(SMileCrypto.LOG_TAG, "Encrypted passphrase found.");
+            if(OpenSMIME.isDEBUG()) {
+                //Log.d(OpenSMIME.LOG_TAG, "Passphrase: " + encryptedPassphrase);
+                Log.d(OpenSMIME.LOG_TAG, "Encrypted passphrase found.");
             }
             try {
-                if(SMileCrypto.isDEBUG()) {
-                    Log.d(SMileCrypto.LOG_TAG, "Decrypt passphrase for alias: " + alias);
+                if(OpenSMIME.isDEBUG()) {
+                    Log.d(OpenSMIME.LOG_TAG, "Decrypt passphrase for alias: " + alias);
                 }
                 return PasswordEncryption.decryptString(encryptedPassphrase);
             } catch (Exception e) {
-                if(SMileCrypto.isDEBUG()) {
-                    Log.e(SMileCrypto.LOG_TAG, "Error while decrypting passphrase: " + e.getMessage());
+                if(OpenSMIME.isDEBUG()) {
+                    Log.e(OpenSMIME.LOG_TAG, "Error while decrypting passphrase: " + e.getMessage());
                 }
                 return null;
             }
@@ -367,8 +367,8 @@ public class KeyManagement {
                 mailAddress = ((InternetAddress) emailAddress).getAddress();
             }
 
-            if(SMileCrypto.isDEBUG()) {
-                Log.d(SMileCrypto.LOG_TAG, "looking up alias for: " + mailAddress);
+            if(OpenSMIME.isDEBUG()) {
+                Log.d(OpenSMIME.LOG_TAG, "looking up alias for: " + mailAddress);
             }
 
             for (KeyInfo keyInfo : getOwnCertificates()) {
@@ -381,8 +381,8 @@ public class KeyManagement {
 
             return null;
         } catch (Exception e) {
-            if(SMileCrypto.isDEBUG()) {
-                Log.e(SMileCrypto.LOG_TAG, "Error in getAliasByAddress:" + e.getMessage());
+            if(OpenSMIME.isDEBUG()) {
+                Log.e(OpenSMIME.LOG_TAG, "Error in getAliasByAddress:" + e.getMessage());
             }
             e.printStackTrace();
             return null;
@@ -398,8 +398,8 @@ public class KeyManagement {
                 mailAddress = ((InternetAddress) emailAddress).getAddress();
             }
 
-            if(SMileCrypto.isDEBUG()) {
-                Log.d(SMileCrypto.LOG_TAG, "Looking up alias for: " + mailAddress);
+            if(OpenSMIME.isDEBUG()) {
+                Log.d(OpenSMIME.LOG_TAG, "Looking up alias for: " + mailAddress);
             }
 
             List<KeyInfo> keyInfoList;
@@ -418,8 +418,8 @@ public class KeyManagement {
                 }
             }
         } catch (Exception e) {
-            if(SMileCrypto.isDEBUG()) {
-                Log.e(SMileCrypto.LOG_TAG, "Error in getAliasByAddress:" + e.getMessage());
+            if(OpenSMIME.isDEBUG()) {
+                Log.e(OpenSMIME.LOG_TAG, "Error in getAliasByAddress:" + e.getMessage());
             }
             e.printStackTrace();
         }
@@ -453,9 +453,9 @@ public class KeyManagement {
 
         KeyInfo keyInfo = new KeyInfo();
         keyInfo.setAlias(alias);
-        if(SMileCrypto.isDEBUG()) {
-            Log.d(SMileCrypto.LOG_TAG, "· Type: " + c.getType());
-            Log.d(SMileCrypto.LOG_TAG, "· HashCode: " + c.hashCode());
+        if(OpenSMIME.isDEBUG()) {
+            Log.d(OpenSMIME.LOG_TAG, "· Type: " + c.getType());
+            Log.d(OpenSMIME.LOG_TAG, "· HashCode: " + c.hashCode());
         }
         keyInfo.setType(c.getType());
         keyInfo.setHash(Integer.toHexString(c.hashCode()));
@@ -478,8 +478,8 @@ public class KeyManagement {
                 email = IETFUtils.valueToString(rdn_email[0].getFirst().getValue());
             }
 
-            if(SMileCrypto.isDEBUG()) {
-                Log.d(SMileCrypto.LOG_TAG, "· Email: " + email);
+            if(OpenSMIME.isDEBUG()) {
+                Log.d(OpenSMIME.LOG_TAG, "· Email: " + email);
             }
 
             keyInfo.setMail(email);
@@ -523,8 +523,8 @@ public class KeyManagement {
 
     public boolean deleteKey(final String alias) {
         try {
-            if(SMileCrypto.isDEBUG()) {
-                Log.d(SMileCrypto.LOG_TAG, "Delete key with alias: " + alias);
+            if(OpenSMIME.isDEBUG()) {
+                Log.d(OpenSMIME.LOG_TAG, "Delete key with alias: " + alias);
             }
             KeyInfo keyInfo = getKeyInfo(alias);
             if(keyInfo == null) { // already deleted
@@ -544,8 +544,8 @@ public class KeyManagement {
             // just own keys have to be deleted from internal storage
             return deletePassphrase(alias) && deleteP12FromInternalDir(alias);
         } catch (CertificateEncodingException | CertificateParsingException | NoSuchAlgorithmException | KeyStoreException e) {
-            if(SMileCrypto.isDEBUG()) {
-                Log.e(SMileCrypto.LOG_TAG, "Error while deleting key: " + e.getMessage());
+            if(OpenSMIME.isDEBUG()) {
+                Log.e(OpenSMIME.LOG_TAG, "Error while deleting key: " + e.getMessage());
             }
             return false;
         }
@@ -580,13 +580,13 @@ public class KeyManagement {
 
         try {
             FileUtils.copyFile(file, dst);
-            if(SMileCrypto.isDEBUG()) {
-                Log.d(SMileCrypto.LOG_TAG, "Copied p12 to interal storage, filename: " + filename);
+            if(OpenSMIME.isDEBUG()) {
+                Log.d(OpenSMIME.LOG_TAG, "Copied p12 to interal storage, filename: " + filename);
             }
             return true;
         } catch (IOException e) {
-            if(SMileCrypto.isDEBUG()) {
-                Log.e(SMileCrypto.LOG_TAG, "Error copying .p12 to internal storage: " + e.getMessage());
+            if(OpenSMIME.isDEBUG()) {
+                Log.e(OpenSMIME.LOG_TAG, "Error copying .p12 to internal storage: " + e.getMessage());
             }
             return false;
         }
@@ -600,13 +600,13 @@ public class KeyManagement {
 
         try {
             org.apache.commons.io.FileUtils.copyFile(src, dst);
-            if(SMileCrypto.isDEBUG()) {
-                Log.d(SMileCrypto.LOG_TAG, "Copied p12 to interal storage, filename: " + filename);
+            if(OpenSMIME.isDEBUG()) {
+                Log.d(OpenSMIME.LOG_TAG, "Copied p12 to interal storage, filename: " + filename);
             }
             return true;
         } catch (IOException e) {
-            if(SMileCrypto.isDEBUG()) {
-                Log.e(SMileCrypto.LOG_TAG, "Error copying .p12 to internal storage: " + e.getMessage());
+            if(OpenSMIME.isDEBUG()) {
+                Log.e(OpenSMIME.LOG_TAG, "Error copying .p12 to internal storage: " + e.getMessage());
             }
             return false;
         }
@@ -623,21 +623,21 @@ public class KeyManagement {
         File dst = new File(dstDirectory, filename);
         try {
             org.apache.commons.io.FileUtils.copyFile(src, dst);
-            if(SMileCrypto.isDEBUG()) {
-                Log.d(SMileCrypto.LOG_TAG, "Copied p12 from interal storage to SD-card.");
+            if(OpenSMIME.isDEBUG()) {
+                Log.d(OpenSMIME.LOG_TAG, "Copied p12 from interal storage to SD-card.");
             }
             return dst.getAbsolutePath();
         } catch (Exception e) {
-            Log.e(SMileCrypto.LOG_TAG, "Error copying .p12 to external storage: " + e.getMessage());
+            Log.e(OpenSMIME.LOG_TAG, "Error copying .p12 to external storage: " + e.getMessage());
             return null;
         }
     }
 
     public static String copyCertificateToSDCard(X509Certificate certificate, String alias) {
         if (certificate == null || alias == null) {
-            SMileCrypto.EXIT_STATUS = SMileCrypto.STATUS_INVALID_PARAMETER;
-            if(SMileCrypto.isDEBUG()) {
-                Log.e(SMileCrypto.LOG_TAG, "Called copyCertificateToSDCard with invalid parameters.");
+            OpenSMIME.EXIT_STATUS = OpenSMIME.STATUS_INVALID_PARAMETER;
+            if(OpenSMIME.isDEBUG()) {
+                Log.e(OpenSMIME.LOG_TAG, "Called copyCertificateToSDCard with invalid parameters.");
             }
             return null;
         }
@@ -648,20 +648,20 @@ public class KeyManagement {
 
         File dst = new File(dstDirectory, filename);
         try {
-            if(SMileCrypto.isDEBUG()) {
-                Log.d(SMileCrypto.LOG_TAG, "Export certificate with alias: " + alias);
+            if(OpenSMIME.isDEBUG()) {
+                Log.d(OpenSMIME.LOG_TAG, "Export certificate with alias: " + alias);
             }
             FileOutputStream fos = new FileOutputStream(dst);
             fos.write(certificate.getEncoded());
             fos.flush();
             fos.close();
-            if(SMileCrypto.isDEBUG()) {
-                Log.d(SMileCrypto.LOG_TAG, "Exported certificate to SD-card.");
+            if(OpenSMIME.isDEBUG()) {
+                Log.d(OpenSMIME.LOG_TAG, "Exported certificate to SD-card.");
             }
             return dst.getAbsolutePath();
         } catch (Exception e) {
-            if(SMileCrypto.isDEBUG()) {
-                Log.e(SMileCrypto.LOG_TAG, "Error exporting certificate to external storage: " + e.getMessage());
+            if(OpenSMIME.isDEBUG()) {
+                Log.e(OpenSMIME.LOG_TAG, "Error exporting certificate to external storage: " + e.getMessage());
             }
             return null;
         }
@@ -669,34 +669,34 @@ public class KeyManagement {
 
     private String addCertificateToKeyStore(final PrivateKey key, final X509Certificate certificate) {
         try {
-            if(SMileCrypto.isDEBUG()) {
-                Log.d(SMileCrypto.LOG_TAG, "Import certificate to keyStore.");
+            if(OpenSMIME.isDEBUG()) {
+                Log.d(OpenSMIME.LOG_TAG, "Import certificate to keyStore.");
             }
 
             String alias = "SMile_crypto_own_" + getThumbprint(certificate);
             //Check whether cert is already there
             if (androidKeyStore.containsAlias(alias)) {
-                if(SMileCrypto.isDEBUG()) {
-                    Log.d(SMileCrypto.LOG_TAG, "Alias " + alias + " already exists.");
+                if(OpenSMIME.isDEBUG()) {
+                    Log.d(OpenSMIME.LOG_TAG, "Alias " + alias + " already exists.");
                 }
-                SMileCrypto.EXIT_STATUS = SMileCrypto.STATUS_CERTIFICATE_ALREADY_IMPORTED;
+                OpenSMIME.EXIT_STATUS = OpenSMIME.STATUS_CERTIFICATE_ALREADY_IMPORTED;
                 return alias;
             }
 
             androidKeyStore.setKeyEntry(alias, key, null, new Certificate[]{certificate});
-            SMileCrypto.EXIT_STATUS = SMileCrypto.STATUS_SUCCESS;
+            OpenSMIME.EXIT_STATUS = OpenSMIME.STATUS_SUCCESS;
             return alias;
         } catch (Exception e) {
-            if(SMileCrypto.isDEBUG()) {
-                Log.e(SMileCrypto.LOG_TAG, "Error while importing certificate: " + e.getMessage());
+            if(OpenSMIME.isDEBUG()) {
+                Log.e(OpenSMIME.LOG_TAG, "Error while importing certificate: " + e.getMessage());
             }
             return null;
         }
     }
 
     private static Boolean savePassphrase(final String alias, final String passphrase) {
-        if(SMileCrypto.isDEBUG()) {
-            Log.d(SMileCrypto.LOG_TAG, "Encrypt passphrase for alias: " + alias);
+        if(OpenSMIME.isDEBUG()) {
+            Log.d(OpenSMIME.LOG_TAG, "Encrypt passphrase for alias: " + alias);
         }
 
         String encryptedPassphrase = PasswordEncryption.encryptString(passphrase);
@@ -705,8 +705,8 @@ public class KeyManagement {
             return false;
         }
 
-        if(SMileCrypto.isDEBUG()) {
-            Log.d(SMileCrypto.LOG_TAG, "Encrypted passphrase will be saved in preferences:  <sensitive>");
+        if(OpenSMIME.isDEBUG()) {
+            Log.d(OpenSMIME.LOG_TAG, "Encrypted passphrase will be saved in preferences:  <sensitive>");
         }
 
         SharedPreferences.Editor editor = App.getPreferences().edit();

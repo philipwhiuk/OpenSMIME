@@ -16,7 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import com.whiuk.philip.opensmime.R;
-import com.whiuk.philip.opensmime.SMileCrypto;
+import com.whiuk.philip.opensmime.OpenSMIME;
 import com.whiuk.philip.opensmime.utilities.Utils;
 
 public class ExpandableListAdapter extends BaseExpandableListAdapter {
@@ -152,8 +152,8 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
                 text.setText(data[1]);
                 break;
             default:
-                if(SMileCrypto.isDEBUG()) {
-                    Log.d(SMileCrypto.LOG_TAG, "This case shouldn't occur. Check if you forgot to add a new case.");
+                if(OpenSMIME.isDEBUG()) {
+                    Log.d(OpenSMIME.LOG_TAG, "This case shouldn't occur. Check if you forgot to add a new case.");
                 }
         }
         return convertView;

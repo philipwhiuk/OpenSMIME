@@ -4,14 +4,14 @@ import android.app.Application;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
-public class SMileCrypto extends Application {
+public class OpenSMIME extends Application {
 
     public static interface ApplicationAware {
         void initializeComponent(Application application);
     }
 
     public static Application app = null;
-    public static final String LOG_TAG = "SMile-crypto";
+    public static final String LOG_TAG = "OpenSMIME";
 
     public static int EXIT_STATUS;
 

@@ -19,22 +19,39 @@ import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.cert.CertificateException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
-import com.whiuk.philip.opensmime.SMileCrypto;
+import com.whiuk.philip.opensmime.OpenSMIME;
 import com.whiuk.philip.opensmime.crypto.KeyManagement;
 import com.whiuk.philip.opensmime.remote.operation.CryptoOperation;
 import org.openintents.smime.ISMimeService;
-import org.openintents.smime.SMimeApi;
+import org.openintents.smime.util.SMimeApi;
 import korex.mail.MessagingException;
 import korex.mail.internet.AddressException;
 import korex.mail.internet.InternetAddress;
 
 public class SMimeService extends Service {
 
+    private Map<Long, ParcelFileDescriptor> mOutputPipeMap = new HashMap<Long, ParcelFileDescriptor>();
+
     private final ISMimeService.Stub mBinder = new ISMimeService.Stub() {
         @Override
-        public Intent execute(Intent data, ParcelFileDescriptor input, ParcelFileDescriptor output) throws RemoteException {
+        public ParcelFileDescriptor createOutputPipe(int pipeId) throws RemoteException {
+
+            try {
+                ParcelFileDescriptor[] pipe = ParcelFileDescriptor.createPipe();
+                mOutputPipeMap.put(createKey(outputPipeId), pipe[1]);
+                return pipe[0];
+            } catch (IOException e) {
+                Log.e(OpenSMIME.LOG_TAG, "IOException in OpenPgpService2", e);
+                return null;
+            }
+        }
+
+        @Override
+        public Intent execute(Intent data, ParcelFileDescriptor input, int pipeId) throws RemoteException {
             return processRequest(data, input, output);
         }
     };
@@ -83,8 +100,8 @@ public class SMimeService extends Service {
                 case SMimeApi.HAS_PUBLIC_KEY:
                     return checkPublicKey(data);
                 default:
-                    if(SMileCrypto.isDEBUG()) {
-                        Log.d(SMileCrypto.LOG_TAG, "Unknown operation " + action);
+                    if(OpenSMIME.isDEBUG()) {
+                        Log.d(OpenSMIME.LOG_TAG, "Unknown operation " + action);
                     }
             }
 
@@ -95,8 +112,8 @@ public class SMimeService extends Service {
         } catch (IOException | GeneralSecurityException | CertPathReviewerException | CMSException |
                 OperatorCreationException | SMIMEException | ExecutionException | InterruptedException | MessagingException e) {
             result.putExtra(SMimeApi.EXTRA_RESULT_CODE, SMimeApi.RESULT_CODE_ERROR);
-            if(SMileCrypto.isDEBUG()) {
-                Log.e(SMileCrypto.LOG_TAG, "Exception while doing crypto stuff", e);
+            if(OpenSMIME.isDEBUG()) {
+                Log.e(OpenSMIME.LOG_TAG, "Exception while doing crypto stuff", e);
             }
         } finally {
             if (operation != null) {
@@ -133,10 +150,10 @@ public class SMimeService extends Service {
             intent.putExtra(SMimeApi.EXTRA_RESULT_CODE, SMimeApi.RESULT_CODE_ERROR);
 
         } catch (CertificateException | NoSuchAlgorithmException | NoSuchProviderException | KeyStoreException | IOException e) {
-            Log.e(SMileCrypto.LOG_TAG, "Error getting KeyManagement instance", e);
+            Log.e(OpenSMIME.LOG_TAG, "Error getting KeyManagement instance", e);
             intent.putExtra(SMimeApi.EXTRA_RESULT_CODE, SMimeApi.RESULT_CODE_ERROR);
         } catch (AddressException e) {
-            Log.e(SMileCrypto.LOG_TAG, "Error creating email address", e);
+            Log.e(OpenSMIME.LOG_TAG, "Error creating email address", e);
             intent.putExtra(SMimeApi.EXTRA_RESULT_CODE, SMimeApi.RESULT_CODE_ERROR);
         }
         return intent;

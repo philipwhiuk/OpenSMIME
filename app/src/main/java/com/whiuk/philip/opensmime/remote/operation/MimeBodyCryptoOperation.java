@@ -19,7 +19,7 @@ import java.security.NoSuchProviderException;
 import java.security.cert.CertificateException;
 import java.util.concurrent.ExecutionException;
 
-import com.whiuk.philip.opensmime.SMileCrypto;
+import com.whiuk.philip.opensmime.OpenSMIME;
 import com.whiuk.philip.opensmime.crypto.CryptoParams;
 import com.whiuk.philip.opensmime.remote.MimeBodyLoaderTaskBuilder;
 import korex.mail.MessagingException;
@@ -38,13 +38,13 @@ abstract class MimeBodyCryptoOperation extends CryptoOperation<MimeBodyPart> {
         final MimeBodyPart processed = process(source, cryptoParams);
         if (processed != null && outputStream != null) {
             final File targetFile = getOutputFile();
-            if(SMileCrypto.isDEBUG()) {
+            if(OpenSMIME.isDEBUG()) {
                 processed.writeTo(new FileOutputStream(targetFile));
             }
 
             processed.writeTo(outputStream);
         } else {
-            Log.wtf(SMileCrypto.LOG_TAG, "processed or outputstream was null, cannot write to output");
+            Log.wtf(OpenSMIME.LOG_TAG, "processed or outputstream was null, cannot write to output");
         }
     }
 }

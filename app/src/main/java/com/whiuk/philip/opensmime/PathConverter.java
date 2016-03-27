@@ -87,7 +87,7 @@ public class PathConverter {
 
             return new FileInformation(tmpFile, fileName, mimeType);
         } catch (IOException e) {
-            Log.e(SMileCrypto.LOG_TAG, "error acquiring FileInforamtion in handleFileScheme", e);
+            Log.e(OpenSMIME.LOG_TAG, "error acquiring FileInforamtion in handleFileScheme", e);
         }
 
         return null;
@@ -112,7 +112,7 @@ public class PathConverter {
             }
 
         } catch (IOException e) {
-            Log.e(SMileCrypto.LOG_TAG, "error in PathConverter.handleContentScheme", e);
+            Log.e(OpenSMIME.LOG_TAG, "error in PathConverter.handleContentScheme", e);
         }
 
         return null;

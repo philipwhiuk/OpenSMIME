@@ -32,7 +32,7 @@ import org.joda.time.format.DateTimeFormatter;
 
 import com.whiuk.philip.opensmime.App;
 import com.whiuk.philip.opensmime.R;
-import com.whiuk.philip.opensmime.SMileCrypto;
+import com.whiuk.philip.opensmime.OpenSMIME;
 import com.whiuk.philip.opensmime.crypto.SelfSignedCertificateCreator;
 import com.whiuk.philip.opensmime.utilities.Utils;
 
@@ -86,21 +86,21 @@ public class CertificateCreationActivity extends ActionBarActivity {
             DateTime tmp = DateTime.now();
             DateTime now = DateTime.now();
             ++monthOfYear; // DatePicker starts with 0
-            if(SMileCrypto.isDEBUG()) {
-                Log.d(SMileCrypto.LOG_TAG, "Today: " + now.getDayOfMonth() + "." + now.getMonthOfYear() + "." + now.getYear());
-                Log.d(SMileCrypto.LOG_TAG, "Got date: " + dayOfMonth + "." + monthOfYear + "." + year);
+            if(OpenSMIME.isDEBUG()) {
+                Log.d(OpenSMIME.LOG_TAG, "Today: " + now.getDayOfMonth() + "." + now.getMonthOfYear() + "." + now.getYear());
+                Log.d(OpenSMIME.LOG_TAG, "Got date: " + dayOfMonth + "." + monthOfYear + "." + year);
             }
             valid = tmp.withDate(year, monthOfYear, dayOfMonth);
             date.setText(format.print(valid));
             if(valid.getMillis() <= now.getMillis()) {
-                if(SMileCrypto.isDEBUG()) {
-                    Log.d(SMileCrypto.LOG_TAG, "Date invalid");
+                if(OpenSMIME.isDEBUG()) {
+                    Log.d(OpenSMIME.LOG_TAG, "Date invalid");
                 }
                 dateOk = false;
                 wrongDate.setVisibility(View.VISIBLE);
             } else {
-                if(SMileCrypto.isDEBUG()) {
-                    Log.d(SMileCrypto.LOG_TAG, "Date valid");
+                if(OpenSMIME.isDEBUG()) {
+                    Log.d(OpenSMIME.LOG_TAG, "Date valid");
                 }
                 wrongDate.setVisibility(View.GONE);
                 dateOk = true;
@@ -125,8 +125,8 @@ public class CertificateCreationActivity extends ActionBarActivity {
         if (bar != null) {
             bar.setDisplayHomeAsUpEnabled(true);
         } else {
-            if(SMileCrypto.isDEBUG()) {
-                Log.e(SMileCrypto.LOG_TAG, "Failed to set home as up in CertificateCreationActivity");
+            if(OpenSMIME.isDEBUG()) {
+                Log.e(OpenSMIME.LOG_TAG, "Failed to set home as up in CertificateCreationActivity");
             }
         }
 
@@ -308,19 +308,19 @@ public class CertificateCreationActivity extends ActionBarActivity {
         public void afterTextChanged(Editable s) {
             int status = SelfSignedCertificateCreator.validateName(s.toString());
             switch (status) {
-                case SMileCrypto.STATUS_NAME_OK :
+                case OpenSMIME.STATUS_NAME_OK :
                     nameOk = true;
                     wrongName.setVisibility(View.GONE);
                     break;
-                case  SMileCrypto.STATUS_NAME_EMPTY:
+                case  OpenSMIME.STATUS_NAME_EMPTY:
                     wrongName.setText(getString(R.string.empty_name));
                     error();
                     break;
-                case SMileCrypto.STATUS_NO_NAME:
+                case OpenSMIME.STATUS_NO_NAME:
                     wrongName.setText(getString(R.string.no_name));
                     error();
                     break;
-                case SMileCrypto.STATUS_NAME_INVALID_CHARACTER:
+                case OpenSMIME.STATUS_NAME_INVALID_CHARACTER:
                     wrongName.setText(getString(R.string.invalid_name));
                     error();
                     break;
@@ -354,23 +354,23 @@ public class CertificateCreationActivity extends ActionBarActivity {
             String emailAddress = s.toString();
             int status = SelfSignedCertificateCreator.validateEmail(emailAddress);
             switch (status) {
-                case SMileCrypto.STATUS_EMAIL_OK :
+                case OpenSMIME.STATUS_EMAIL_OK :
                     emailOk = true;
                     wrongEmail.setVisibility(View.GONE);
                     break;
-                case  SMileCrypto.STATUS_EMAIL_EMPTY:
+                case  OpenSMIME.STATUS_EMAIL_EMPTY:
                     wrongEmail.setText(getString(R.string.empty_email));
                     error();
                     break;
-                case SMileCrypto.STATUS_NO_EMAIL:
+                case OpenSMIME.STATUS_NO_EMAIL:
                     wrongEmail.setText(getString(R.string.no_email));
                     error();
                     break;
-                case SMileCrypto.STATUS_EMAIL_INVALID_CHARACTER:
+                case OpenSMIME.STATUS_EMAIL_INVALID_CHARACTER:
                     wrongEmail.setText(getString(R.string.invalid_email_character));
                     error();
                     break;
-                case SMileCrypto.STATUS_EMAIL_INVALID:
+                case OpenSMIME.STATUS_EMAIL_INVALID:
                     wrongEmail.setText(getString(R.string.invalid_email));
                     error();
                     break;
@@ -467,10 +467,10 @@ public class CertificateCreationActivity extends ActionBarActivity {
             protected void onPostExecute(Object o) {
                 // Output result.
                 switch (status) {
-                    case SMileCrypto.STATUS_SAVED_CERT:
+                    case OpenSMIME.STATUS_SAVED_CERT:
                         Toast.makeText(App.getContext(), getString(R.string.creation_success), Toast.LENGTH_SHORT).show();
                         break;
-                    case SMileCrypto.STATUS_EXPERT_WRONG_STRING:
+                    case OpenSMIME.STATUS_EXPERT_WRONG_STRING:
                         Toast.makeText(App.getContext(), getString(R.string.wrong_rdn_format), Toast.LENGTH_SHORT).show();
                         break;
                     default:

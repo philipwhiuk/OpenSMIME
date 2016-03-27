@@ -15,7 +15,7 @@ import java.security.cert.X509Certificate;
 import java.util.List;
 import java.util.Properties;
 
-import com.whiuk.philip.opensmime.SMileCrypto;
+import com.whiuk.philip.opensmime.OpenSMIME;
 import korex.mail.Session;
 import korex.mail.internet.MimeBodyPart;
 import korex.mail.internet.MimeMessage;
@@ -60,8 +60,8 @@ public class AsyncEncryptMessage extends AsyncTask<Void, Void, MimeMessage> {
 
             return result;
         } catch (Exception e) {
-            if(SMileCrypto.isDEBUG()) {
-                Log.e(SMileCrypto.LOG_TAG, "Error in encryptMessage: " + e.getMessage());
+            if(OpenSMIME.isDEBUG()) {
+                Log.e(OpenSMIME.LOG_TAG, "Error in encryptMessage: " + e.getMessage());
             }
             //e.printStackTrace();
             return null;

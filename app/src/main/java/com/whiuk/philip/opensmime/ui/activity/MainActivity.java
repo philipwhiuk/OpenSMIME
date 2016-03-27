@@ -29,7 +29,7 @@ import java.util.List;
 
 import com.whiuk.philip.opensmime.KeyInfo;
 import com.whiuk.philip.opensmime.R;
-import com.whiuk.philip.opensmime.SMileCrypto;
+import com.whiuk.philip.opensmime.OpenSMIME;
 import com.whiuk.philip.opensmime.crypto.KeyManagement;
 import com.whiuk.philip.opensmime.ui.activity.items.DividerItemDecoration;
 import com.whiuk.philip.opensmime.ui.adapter.KeyAdapter;
@@ -109,8 +109,8 @@ public class MainActivity extends ActionBarActivity {
         try {
             ownCertificates = KeyManagement.getInstance().getOwnCertificates();
         } catch (Exception e) {
-            if(SMileCrypto.isDEBUG()) {
-                Log.e(SMileCrypto.LOG_TAG, "Error: " + e.getMessage());
+            if(OpenSMIME.isDEBUG()) {
+                Log.e(OpenSMIME.LOG_TAG, "Error: " + e.getMessage());
             }
         }
 
@@ -118,12 +118,12 @@ public class MainActivity extends ActionBarActivity {
         while ((mName == null || mName.equals("")) && i < ownCertificates.size()) { // use first certificate with name set
             KeyInfo keyInfo = ownCertificates.get(i);
             mName = keyInfo.getContact();
-            if(SMileCrypto.isDEBUG()) {
-                Log.d(SMileCrypto.LOG_TAG, "mName: " + mName);
+            if(OpenSMIME.isDEBUG()) {
+                Log.d(OpenSMIME.LOG_TAG, "mName: " + mName);
             }
             mEmail = keyInfo.getMail();
-            if(SMileCrypto.isDEBUG()) {
-                Log.d(SMileCrypto.LOG_TAG, "mEmail: " + mEmail);
+            if(OpenSMIME.isDEBUG()) {
+                Log.d(OpenSMIME.LOG_TAG, "mEmail: " + mEmail);
             }
             i++;
         }
@@ -163,8 +163,8 @@ public class MainActivity extends ActionBarActivity {
                     else
                         title = mTitles[position - 1];
 
-                    if(SMileCrypto.isDEBUG()) {
-                        Log.d(SMileCrypto.LOG_TAG, "Clicked on NavigationDrawerItem " + position + ": "
+                    if(OpenSMIME.isDEBUG()) {
+                        Log.d(OpenSMIME.LOG_TAG, "Clicked on NavigationDrawerItem " + position + ": "
                                 + title);
                     }
                     //switch not possible here :-(

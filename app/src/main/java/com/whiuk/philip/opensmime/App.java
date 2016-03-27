@@ -73,8 +73,8 @@ public class App extends Application {
             gen.initialize(spec);
             gen.generateKeyPair();
         } catch (Exception e) {
-            if(SMileCrypto.isDEBUG()) {
-                Log.e(SMileCrypto.LOG_TAG, "ERROR: " + e.getMessage());
+            if(OpenSMIME.isDEBUG()) {
+                Log.e(OpenSMIME.LOG_TAG, "ERROR: " + e.getMessage());
             }
             e.printStackTrace();
         }

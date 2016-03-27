@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-import com.whiuk.philip.opensmime.SMileCrypto;
+import com.whiuk.philip.opensmime.OpenSMIME;
 import korex.mail.MessagingException;
 import korex.mail.Session;
 import korex.mail.internet.MimeMessage;
@@ -24,7 +24,7 @@ public class MimeMessageLoaderTask extends ContentLoaderTask<MimeMessage> {
         Session session = Session.getDefaultInstance(props, null);
         try {
             InputStream inputStream = getInputStream();
-            if(SMileCrypto.isDEBUG()) {
+            if(OpenSMIME.isDEBUG()) {
                 inputFile = copyToFile(inputStream);
                 inputStream = new FileInputStream(inputFile);
             }

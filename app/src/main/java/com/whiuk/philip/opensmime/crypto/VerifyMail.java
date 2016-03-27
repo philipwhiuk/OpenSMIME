@@ -59,7 +59,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
-import com.whiuk.philip.opensmime.SMileCrypto;
+import com.whiuk.philip.opensmime.OpenSMIME;
 import org.openintents.smime.SMimeApi;
 import korex.mail.internet.MimeBodyPart;
 import korex.mail.internet.MimeMultipart;
@@ -87,8 +87,8 @@ public class VerifyMail {
         try {
             return task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR).get();
         } catch (InterruptedException | ExecutionException e) {
-            if(SMileCrypto.isDEBUG()) {
-                Log.e(SMileCrypto.LOG_TAG, "failed to verify mail ", e);
+            if(OpenSMIME.isDEBUG()) {
+                Log.e(OpenSMIME.LOG_TAG, "failed to verify mail ", e);
             }
         }
 
@@ -446,8 +446,8 @@ public class VerifyMail {
                             return SMimeApi.RESULT_SIGNATURE_INVALID_EXPIRED;
                         }
 
-                        if(SMileCrypto.isDEBUG()) {
-                            Log.d(SMileCrypto.LOG_TAG, "valid signature: " + valid);
+                        if(OpenSMIME.isDEBUG()) {
+                            Log.d(OpenSMIME.LOG_TAG, "valid signature: " + valid);
                         }
 
                         valid &= checkSigner(cert, sender);
@@ -458,8 +458,8 @@ public class VerifyMail {
                             return SMimeApi.RESULT_SIGNATURE_INVALID_EXPIRED;
                         }
 
-                        if(SMileCrypto.isDEBUG()) {
-                            Log.d(SMileCrypto.LOG_TAG, "valid signer: " + valid);
+                        if(OpenSMIME.isDEBUG()) {
+                            Log.d(OpenSMIME.LOG_TAG, "valid signer: " + valid);
                         }
                         Date signTime = checkSignatureTime(usedParameters, signer, cert);
                         usedParameters.setDate(signTime);
@@ -476,8 +476,8 @@ public class VerifyMail {
                             status = SMimeApi.RESULT_SIGNATURE_SIGNED_UNCOFIRMED;
                         }
 
-                        if(SMileCrypto.isDEBUG()) {
-                            Log.d(SMileCrypto.LOG_TAG, "valid certificate path: " + valid);
+                        if(OpenSMIME.isDEBUG()) {
+                            Log.d(OpenSMIME.LOG_TAG, "valid certificate path: " + valid);
                         }
                     }
                 }

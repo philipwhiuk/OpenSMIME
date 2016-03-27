@@ -50,7 +50,7 @@ import java.util.List;
 import com.whiuk.philip.opensmime.App;
 import com.whiuk.philip.opensmime.KeyInfo;
 import com.whiuk.philip.opensmime.R;
-import com.whiuk.philip.opensmime.SMileCrypto;
+import com.whiuk.philip.opensmime.OpenSMIME;
 import com.whiuk.philip.opensmime.crypto.KeyManagement;
 import com.whiuk.philip.opensmime.ui.activity.DisplayCertificateInformationActivity;
 import com.whiuk.philip.opensmime.ui.listener.DeleteRevealListener;
@@ -78,8 +78,8 @@ public class KeyAdapter extends RecyclerSwipeAdapter<KeyAdapter.KeyViewHolder> i
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        if(SMileCrypto.isDEBUG()) {
-            Log.d(SMileCrypto.LOG_TAG, "Settings changed: Key " + key);
+        if(OpenSMIME.isDEBUG()) {
+            Log.d(OpenSMIME.LOG_TAG, "Settings changed: Key " + key);
         }
         if (key.equals("pref_key_direction") || key.equals("pref_key_type")) {
             ArrayList<KeyInfo> kis = new ArrayList<KeyInfo>(keylist.size());
@@ -303,11 +303,11 @@ public class KeyAdapter extends RecyclerSwipeAdapter<KeyAdapter.KeyViewHolder> i
                 contactLookup.close();
             }
         }
-        if(SMileCrypto.isDEBUG()) {
-            Log.d(SMileCrypto.LOG_TAG, "mail: " + email);
-            Log.d(SMileCrypto.LOG_TAG, "thumb: " + thumb);
-            Log.d(SMileCrypto.LOG_TAG, "name: " + name);
-            Log.d(SMileCrypto.LOG_TAG, "key: " + lookUpKey);
+        if(OpenSMIME.isDEBUG()) {
+            Log.d(OpenSMIME.LOG_TAG, "mail: " + email);
+            Log.d(OpenSMIME.LOG_TAG, "thumb: " + thumb);
+            Log.d(OpenSMIME.LOG_TAG, "name: " + name);
+            Log.d(OpenSMIME.LOG_TAG, "key: " + lookUpKey);
         }
 
         final Uri lookupUri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_LOOKUP_URI, lookUpKey);
@@ -317,12 +317,12 @@ public class KeyAdapter extends RecyclerSwipeAdapter<KeyAdapter.KeyViewHolder> i
             Bitmap bmp = Utils.getCroppedBitmap(BitmapFactory.decodeStream(input));
             BitmapDrawable bdrawable = new BitmapDrawable(App.getContext().getResources(), bmp);
             holder.contactimage.setBackground(bdrawable);
-            if(SMileCrypto.isDEBUG()) {
-                Log.d(SMileCrypto.LOG_TAG, "Thumbnail found.");
+            if(OpenSMIME.isDEBUG()) {
+                Log.d(OpenSMIME.LOG_TAG, "Thumbnail found.");
             }
         } else {
-            if(SMileCrypto.isDEBUG()) {
-                Log.d(SMileCrypto.LOG_TAG, "Thumbnail not found.");
+            if(OpenSMIME.isDEBUG()) {
+                Log.d(OpenSMIME.LOG_TAG, "Thumbnail not found.");
             }
 
             String initial = "A";
@@ -355,8 +355,8 @@ public class KeyAdapter extends RecyclerSwipeAdapter<KeyAdapter.KeyViewHolder> i
     private void printError() {
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         builder.setTitle(App.getContext().getResources().getString(R.string.error));
-        if(SMileCrypto.isDEBUG()) {
-            Log.e(SMileCrypto.LOG_TAG, "EXIT_STATUS: " + SMileCrypto.EXIT_STATUS);
+        if(OpenSMIME.isDEBUG()) {
+            Log.e(OpenSMIME.LOG_TAG, "EXIT_STATUS: " + OpenSMIME.EXIT_STATUS);
         }
         builder.setMessage(App.getContext().getResources().getString(R.string.internal_error));
         builder.setPositiveButton(R.string.cancel, new DialogInterface.OnClickListener() {

@@ -7,7 +7,7 @@ import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 
 import com.whiuk.philip.opensmime.R;
-import com.whiuk.philip.opensmime.SMileCrypto;
+import com.whiuk.philip.opensmime.OpenSMIME;
 
 public class SettingsFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
 
@@ -50,7 +50,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if (key.equalsIgnoreCase("pref_key_debug")) {
             Preference pref = findPreference(key);
-            SMileCrypto.setDEBUG(sharedPreferences.getBoolean(key, false));
+            OpenSMIME.setDEBUG(sharedPreferences.getBoolean(key, false));
         } else if(key.equals("delete_distance")) {
             int value = sharedPreferences.getInt(key, 30);
             Preference pref = findPreference(key);

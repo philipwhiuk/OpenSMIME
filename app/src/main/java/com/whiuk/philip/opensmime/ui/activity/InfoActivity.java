@@ -17,7 +17,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.whiuk.philip.opensmime.R;
-import com.whiuk.philip.opensmime.SMileCrypto;
+import com.whiuk.philip.opensmime.OpenSMIME;
 
 public class InfoActivity extends ActionBarActivity {
     private Toolbar toolbar;
@@ -41,8 +41,8 @@ public class InfoActivity extends ActionBarActivity {
             build.setText(getString(R.string.current_version) + version + ".\n" +
                     getString(R.string.build) + getString(R.string.BuildInfo_Git_CommitHash) + ".");
         } catch (PackageManager.NameNotFoundException e) {
-            if(SMileCrypto.isDEBUG()) {
-                Log.d(SMileCrypto.LOG_TAG, "Cannot find package name: " + e.getMessage());
+            if(OpenSMIME.isDEBUG()) {
+                Log.d(OpenSMIME.LOG_TAG, "Cannot find package name: " + e.getMessage());
             }
             build.setVisibility(View.GONE);
         }

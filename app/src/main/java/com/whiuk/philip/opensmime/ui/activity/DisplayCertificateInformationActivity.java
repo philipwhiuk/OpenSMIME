@@ -32,7 +32,7 @@ import java.util.List;
 import com.whiuk.philip.opensmime.App;
 import com.whiuk.philip.opensmime.KeyInfo;
 import com.whiuk.philip.opensmime.R;
-import com.whiuk.philip.opensmime.SMileCrypto;
+import com.whiuk.philip.opensmime.OpenSMIME;
 import com.whiuk.philip.opensmime.crypto.KeyManagement;
 import com.whiuk.philip.opensmime.ui.activity.items.AbstractCertificateInfoItem;
 import com.whiuk.philip.opensmime.ui.activity.items.CertificateInformationItem;
@@ -58,25 +58,25 @@ public class DisplayCertificateInformationActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(SMileCrypto.isDEBUG()) {
-            Log.d(SMileCrypto.LOG_TAG, "Started DisplayCertificateInformationActivity.");
+        if(OpenSMIME.isDEBUG()) {
+            Log.d(OpenSMIME.LOG_TAG, "Started DisplayCertificateInformationActivity.");
         }
         Bundle extras = getIntent().getExtras();
         if (extras == null) {
-            if(SMileCrypto.isDEBUG()) {
-                Log.e(SMileCrypto.LOG_TAG, "intent was null.");
+            if(OpenSMIME.isDEBUG()) {
+                Log.e(OpenSMIME.LOG_TAG, "intent was null.");
             }
             showErrorPrompt();
         }
         this.alias = extras.getString("Alias");
         if (this.alias == null) {
-            if(SMileCrypto.isDEBUG()) {
-                Log.e(SMileCrypto.LOG_TAG, "Called without alias.");
+            if(OpenSMIME.isDEBUG()) {
+                Log.e(OpenSMIME.LOG_TAG, "Called without alias.");
             }
             finish();
         }
-        if(SMileCrypto.isDEBUG()) {
-            Log.d(SMileCrypto.LOG_TAG, "Called with alias: " + alias);
+        if(OpenSMIME.isDEBUG()) {
+            Log.d(OpenSMIME.LOG_TAG, "Called with alias: " + alias);
         }
         this.name = extras.getString("Name");
 
@@ -93,8 +93,8 @@ public class DisplayCertificateInformationActivity extends ActionBarActivity {
 
         //TODO: workaround to prevent crash
         if (listDataHeader == null || listDataChild == null) {
-            if(SMileCrypto.isDEBUG()) {
-                Log.e(SMileCrypto.LOG_TAG, "ListDataHeader/ListDataChild was null.");
+            if(OpenSMIME.isDEBUG()) {
+                Log.e(OpenSMIME.LOG_TAG, "ListDataHeader/ListDataChild was null.");
             }
             finish();
         } else {
@@ -136,8 +136,8 @@ public class DisplayCertificateInformationActivity extends ActionBarActivity {
             this.keyInfo = keyInfo;
             extractCertificateInformation(keyInfo);
         } catch (Exception e) {
-            if(SMileCrypto.isDEBUG()) {
-                Log.e(SMileCrypto.LOG_TAG, "Error: " + e.getMessage());
+            if(OpenSMIME.isDEBUG()) {
+                Log.e(OpenSMIME.LOG_TAG, "Error: " + e.getMessage());
             }
             showErrorPrompt();
         }
@@ -150,8 +150,8 @@ public class DisplayCertificateInformationActivity extends ActionBarActivity {
     private void extractCertificateInformation(KeyInfo keyInfo) {
         if (this.name == null) {
             this.name = keyInfo.getContact();
-            if(SMileCrypto.isDEBUG()) {
-                Log.d(SMileCrypto.LOG_TAG, "Name was null, set name to: " + this.name);
+            if(OpenSMIME.isDEBUG()) {
+                Log.d(OpenSMIME.LOG_TAG, "Name was null, set name to: " + this.name);
             }
             toolbar.setTitle(this.name);
             setSupportActionBar(toolbar);
@@ -171,14 +171,14 @@ public class DisplayCertificateInformationActivity extends ActionBarActivity {
      * @param keyInfo The key info representing the certificate
      */
     private void generatePersonalInformation(KeyInfo keyInfo) {
-        if(SMileCrypto.isDEBUG()) {
-            Log.d(SMileCrypto.LOG_TAG, "Setting personal information");
+        if(OpenSMIME.isDEBUG()) {
+            Log.d(OpenSMIME.LOG_TAG, "Setting personal information");
         }
         LinkedHashMap<String, String[]> data = new LinkedHashMap<>();
         X509Certificate certificate = keyInfo.getCertificate();
         if (certificate == null) {
-            if(SMileCrypto.isDEBUG()) {
-                Log.e(SMileCrypto.LOG_TAG, "Certificate was null -- abort.");
+            if(OpenSMIME.isDEBUG()) {
+                Log.e(OpenSMIME.LOG_TAG, "Certificate was null -- abort.");
             }
             return;
         }
@@ -192,8 +192,8 @@ public class DisplayCertificateInformationActivity extends ActionBarActivity {
             pers.add(persI);
             listDataChild.put(listDataHeader.get(0), pers);
         } catch (CertificateEncodingException e) {
-            if(SMileCrypto.isDEBUG()) {
-                Log.d(SMileCrypto.LOG_TAG, "Error with certificate encoding: " + e.getMessage());
+            if(OpenSMIME.isDEBUG()) {
+                Log.d(OpenSMIME.LOG_TAG, "Error with certificate encoding: " + e.getMessage());
             }
             Toast.makeText(App.getContext(), getString(R.string.failed_extract), Toast.LENGTH_SHORT).show();
         }
@@ -204,8 +204,8 @@ public class DisplayCertificateInformationActivity extends ActionBarActivity {
      * @param keyInfo The key info representing the certificate
      */
     private void generateCryptographicInformation(KeyInfo keyInfo) {
-        if(SMileCrypto.isDEBUG()) {
-            Log.d(SMileCrypto.LOG_TAG, "Setting cryptographic information");
+        if(OpenSMIME.isDEBUG()) {
+            Log.d(OpenSMIME.LOG_TAG, "Setting cryptographic information");
         }
         listDataHeader.add(getString(R.string.cryptographic));
         HashMap<String, String> cryptographicInfo = new HashMap<>();
@@ -220,8 +220,8 @@ public class DisplayCertificateInformationActivity extends ActionBarActivity {
             cryptographicInfo.put("Signature Algorithm", keyInfo.getCertificate().getSigAlgName());
             cryptographicInfo.put("Signature", new BigInteger(keyInfo.getCertificate().getSignature()).toString(16));
         } else {
-            if(SMileCrypto.isDEBUG()) {
-                Log.d(SMileCrypto.LOG_TAG, "Not an instance of RSAPublicKey.");
+            if(OpenSMIME.isDEBUG()) {
+                Log.d(OpenSMIME.LOG_TAG, "Not an instance of RSAPublicKey.");
             }
             cryptographicInfo.put("Public Key", keyInfo.getCertificate().getPublicKey().toString());
             cryptographicInfo.put("Signature Algorithm", keyInfo.getCertificate().getSigAlgName());
@@ -239,8 +239,8 @@ public class DisplayCertificateInformationActivity extends ActionBarActivity {
      * @param keyInfo The key info representing the certificate
      */
     private void generatingCertificateInformation(KeyInfo keyInfo) {
-        if(SMileCrypto.isDEBUG()) {
-            Log.d(SMileCrypto.LOG_TAG, "Setting certificate information");
+        if(OpenSMIME.isDEBUG()) {
+            Log.d(OpenSMIME.LOG_TAG, "Setting certificate information");
         }
         listDataHeader.add(getString(R.string.certificate));
         HashMap<String, String> certificateInfo = new HashMap<>();
@@ -260,8 +260,8 @@ public class DisplayCertificateInformationActivity extends ActionBarActivity {
      * @param keyInfo The key info representing the certificate
      */
     private void generateValidityInformation(KeyInfo keyInfo) {
-        if(SMileCrypto.isDEBUG()) {
-            Log.d(SMileCrypto.LOG_TAG, "Setting validity information");
+        if(OpenSMIME.isDEBUG()) {
+            Log.d(OpenSMIME.LOG_TAG, "Setting validity information");
         }
         DateTimeFormatter fmt = DateTimeFormat.forPattern("d MMMM yyyy HH:mm:ss");
         listDataHeader.add(getString(R.string.validity));
@@ -281,8 +281,8 @@ public class DisplayCertificateInformationActivity extends ActionBarActivity {
      */
     private void generateCaInformation(KeyInfo keyInfo) {
         X500Name x500name;
-        if(SMileCrypto.isDEBUG()) {
-            Log.d(SMileCrypto.LOG_TAG, "Setting ca information");
+        if(OpenSMIME.isDEBUG()) {
+            Log.d(OpenSMIME.LOG_TAG, "Setting ca information");
         }
         X509Certificate certificate = keyInfo.getCertificate();
         listDataHeader.add(getString(R.string.CA));
@@ -297,8 +297,8 @@ public class DisplayCertificateInformationActivity extends ActionBarActivity {
             pers.add(persI);
             listDataChild.put(listDataHeader.get(1), pers);
         } catch (CertificateEncodingException e) {
-            if(SMileCrypto.isDEBUG()) {
-                Log.d(SMileCrypto.LOG_TAG, "Error with certificate encoding: " + e.getMessage());
+            if(OpenSMIME.isDEBUG()) {
+                Log.d(OpenSMIME.LOG_TAG, "Error with certificate encoding: " + e.getMessage());
             }
             Toast.makeText(App.getContext(), getString(R.string.failed_extract), Toast.LENGTH_SHORT).show();
         }
@@ -385,8 +385,8 @@ public class DisplayCertificateInformationActivity extends ActionBarActivity {
      * Export a certificate.
      */
     private void exportCertificate() {
-        if(SMileCrypto.isDEBUG()) {
-            Log.d(SMileCrypto.LOG_TAG, "Try to export certificate.");
+        if(OpenSMIME.isDEBUG()) {
+            Log.d(OpenSMIME.LOG_TAG, "Try to export certificate.");
         }
         if (this.alias.contains("_own_")) {
             exportOwnCertificate();
@@ -394,8 +394,8 @@ public class DisplayCertificateInformationActivity extends ActionBarActivity {
             exportOtherCertificate();
         } else {
             //this should not happen
-            if(SMileCrypto.isDEBUG()) {
-                Log.e(SMileCrypto.LOG_TAG, "Tried to export certificate with invalid alias: " + alias);
+            if(OpenSMIME.isDEBUG()) {
+                Log.e(OpenSMIME.LOG_TAG, "Tried to export certificate with invalid alias: " + alias);
             }
         }
     }
@@ -450,8 +450,8 @@ public class DisplayCertificateInformationActivity extends ActionBarActivity {
     private void showErrorPrompt() {
         AlertDialog.Builder builder = new AlertDialog.Builder(DisplayCertificateInformationActivity.this);
         builder.setTitle(getResources().getString(R.string.error));
-        if(SMileCrypto.isDEBUG()) {
-            Log.e(SMileCrypto.LOG_TAG, "EXIT_STATUS: " + SMileCrypto.EXIT_STATUS);
+        if(OpenSMIME.isDEBUG()) {
+            Log.e(OpenSMIME.LOG_TAG, "EXIT_STATUS: " + OpenSMIME.EXIT_STATUS);
         }
         builder.setMessage(getResources().getString(R.string.internal_error));
         builder.setPositiveButton(R.string.cancel, new DialogInterface.OnClickListener() {

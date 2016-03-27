@@ -25,7 +25,7 @@ import java.util.List;
 
 import com.whiuk.philip.opensmime.App;
 import com.whiuk.philip.opensmime.R;
-import com.whiuk.philip.opensmime.SMileCrypto;
+import com.whiuk.philip.opensmime.OpenSMIME;
 
 /**
  * Collection of usefull static methods.
@@ -201,8 +201,8 @@ public class Utils {
                 counter++;
             } while (field != null);
         } catch (Exception e) {
-            if(SMileCrypto.isDEBUG()) {
-                Log.e(SMileCrypto.LOG_TAG, "Error accessing data: " + e.getMessage());
+            if(OpenSMIME.isDEBUG()) {
+                Log.e(OpenSMIME.LOG_TAG, "Error accessing data: " + e.getMessage());
             }
         } finally {
             return array;

@@ -19,7 +19,7 @@ import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.whiuk.philip.opensmime.SMileCrypto;
+import com.whiuk.philip.opensmime.OpenSMIME;
 import korex.mail.internet.MimeBodyPart;
 import korex.mail.internet.MimeMultipart;
 
@@ -30,28 +30,28 @@ public class SignMessage {
 
     public MimeMultipart sign(MimeBodyPart mimeBodyPart, KeyStore.PrivateKeyEntry privateKey) {
         if (mimeBodyPart == null) {
-            if(SMileCrypto.isDEBUG()) {
-                Log.e(SMileCrypto.LOG_TAG, "Could not sign, mimeBodyPart was null.");
+            if(OpenSMIME.isDEBUG()) {
+                Log.e(OpenSMIME.LOG_TAG, "Could not sign, mimeBodyPart was null.");
             }
-            SMileCrypto.EXIT_STATUS = SMileCrypto.STATUS_INVALID_PARAMETER;
+            OpenSMIME.EXIT_STATUS = OpenSMIME.STATUS_INVALID_PARAMETER;
             return null;
         }
 
         if (privateKey == null) {
-            if(SMileCrypto.isDEBUG()) {
-                Log.e(SMileCrypto.LOG_TAG, "Could not sign, privateKeyEntry was null.");
+            if(OpenSMIME.isDEBUG()) {
+                Log.e(OpenSMIME.LOG_TAG, "Could not sign, privateKeyEntry was null.");
             }
-            SMileCrypto.EXIT_STATUS = SMileCrypto.STATUS_INVALID_PARAMETER;
+            OpenSMIME.EXIT_STATUS = OpenSMIME.STATUS_INVALID_PARAMETER;
             return null;
         }
 
         try {
             return new AsyncSign(mimeBodyPart, privateKey).execute().get();
         } catch (Exception e) {
-            if(SMileCrypto.isDEBUG()) {
-                Log.e(SMileCrypto.LOG_TAG, "Exception in sign: " + e.getMessage());
+            if(OpenSMIME.isDEBUG()) {
+                Log.e(OpenSMIME.LOG_TAG, "Exception in sign: " + e.getMessage());
             }
-            SMileCrypto.EXIT_STATUS = SMileCrypto.STATUS_ERROR_ASYNC_TASK;
+            OpenSMIME.EXIT_STATUS = OpenSMIME.STATUS_ERROR_ASYNC_TASK;
             return null;
         }
     }
@@ -74,8 +74,8 @@ public class SignMessage {
             MimeMultipart signedMimeMultipart = null;
 
             try {
-                if(SMileCrypto.isDEBUG()) {
-                    Log.d(SMileCrypto.LOG_TAG, "Sign mimeBodyPart.");
+                if(OpenSMIME.isDEBUG()) {
+                    Log.d(OpenSMIME.LOG_TAG, "Sign mimeBodyPart.");
                 }
 
                 JcaSimpleSignerInfoGeneratorBuilder builder = new JcaSimpleSignerInfoGeneratorBuilder();
@@ -96,8 +96,8 @@ public class SignMessage {
 
                 signedMimeMultipart = gen.generate(mimeBodyPart);
             } catch (Exception e) {
-                if(SMileCrypto.isDEBUG()) {
-                    Log.e(SMileCrypto.LOG_TAG, "Error signing mimeBodyPart: " + e.getMessage());
+                if(OpenSMIME.isDEBUG()) {
+                    Log.e(OpenSMIME.LOG_TAG, "Error signing mimeBodyPart: " + e.getMessage());
                 }
                 e.printStackTrace();
             }

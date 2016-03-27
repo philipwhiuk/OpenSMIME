@@ -19,7 +19,7 @@ import java.security.NoSuchProviderException;
 import java.security.cert.CertificateException;
 import java.util.concurrent.ExecutionException;
 
-import com.whiuk.philip.opensmime.SMileCrypto;
+import com.whiuk.philip.opensmime.OpenSMIME;
 import com.whiuk.philip.opensmime.crypto.CryptoParams;
 import com.whiuk.philip.opensmime.remote.MimeMessageLoaderTaskBuilder;
 import org.openintents.smime.SMimeApi;
@@ -41,14 +41,14 @@ public abstract class MimeMessageCryptoOperation extends CryptoOperation<MimeMes
         if(processed != null && outputStream != null) {
             copyHeaders(source, processed);
             processed.saveChanges();
-            if(SMileCrypto.isDEBUG()) {
+            if(OpenSMIME.isDEBUG()) {
                 final File targetFile = getOutputFile();
                 processed.writeTo(new FileOutputStream(targetFile));
             }
             processed.writeTo(outputStream);
             result.putExtra(SMimeApi.EXTRA_RESULT_CODE, SMimeApi.RESULT_CODE_SUCCESS);
         } else {
-            Log.wtf(SMileCrypto.LOG_TAG, "processed or outputstream was null, cannot write to output");
+            Log.wtf(OpenSMIME.LOG_TAG, "processed or outputstream was null, cannot write to output");
         }
     }
 }

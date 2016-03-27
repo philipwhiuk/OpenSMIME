@@ -40,7 +40,7 @@ import java.security.spec.RSAKeyGenParameterSpec;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.whiuk.philip.opensmime.SMileCrypto;
+import com.whiuk.philip.opensmime.OpenSMIME;
 
 /**
  * Create self signed v3 X500 Certificates.
@@ -63,15 +63,15 @@ public class SelfSignedCertificateCreator {
         if(name != null) {
             if(name.length() > 0) {
                 if(name.contains("=") ||name.contains(",")) {
-                    return SMileCrypto.STATUS_NAME_INVALID_CHARACTER;
+                    return OpenSMIME.STATUS_NAME_INVALID_CHARACTER;
                 } else {
-                    return SMileCrypto.STATUS_NAME_OK;
+                    return OpenSMIME.STATUS_NAME_OK;
                 }
             } else {
-                return SMileCrypto.STATUS_NAME_EMPTY;
+                return OpenSMIME.STATUS_NAME_EMPTY;
             }
         } else {
-            return SMileCrypto.STATUS_NO_NAME;
+            return OpenSMIME.STATUS_NO_NAME;
         }
     }
 
@@ -84,19 +84,19 @@ public class SelfSignedCertificateCreator {
         if(email != null) {
             if(email.length() > 0) {
                 if(email.contains("=") || email.contains(",")) {
-                    return SMileCrypto.STATUS_EMAIL_INVALID_CHARACTER;
+                    return OpenSMIME.STATUS_EMAIL_INVALID_CHARACTER;
                 } else {
                     if(android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                        return SMileCrypto.STATUS_EMAIL_OK;
+                        return OpenSMIME.STATUS_EMAIL_OK;
                     } else {
-                        return SMileCrypto.STATUS_EMAIL_INVALID;
+                        return OpenSMIME.STATUS_EMAIL_INVALID;
                     }
                 }
             } else {
-                return SMileCrypto.STATUS_EMAIL_EMPTY;
+                return OpenSMIME.STATUS_EMAIL_EMPTY;
             }
         } else {
-            return SMileCrypto.STATUS_NO_EMAIL;
+            return OpenSMIME.STATUS_NO_EMAIL;
         }
     }
 
@@ -108,11 +108,11 @@ public class SelfSignedCertificateCreator {
      * @param end Certificate termination date.
      * @param passphrase Passphrase to encrypt certificate.
      * @return Status code representing errors or success.
-     * @see SMileCrypto for Status code representation.
+     * @see OpenSMIME for Status code representation.
      */
     public static int createCert(String name, String email, String expert, DateTime end , String passphrase) {
         if(passphrase == null || passphrase.length() == 0) {
-            return SMileCrypto.STATUS_NO_PASSPHRASE;
+            return OpenSMIME.STATUS_NO_PASSPHRASE;
         }
 
         X500Name x500Name;
@@ -120,19 +120,19 @@ public class SelfSignedCertificateCreator {
             try {
                 x500Name = new X500Name(expert);
             } catch (IllegalArgumentException iae) {
-                if(SMileCrypto.isDEBUG()) {
-                    Log.e(SMileCrypto.LOG_TAG, "Wrong expert string: " + iae.getMessage());
+                if(OpenSMIME.isDEBUG()) {
+                    Log.e(OpenSMIME.LOG_TAG, "Wrong expert string: " + iae.getMessage());
                 }
-                return SMileCrypto.STATUS_EXPERT_WRONG_STRING;
+                return OpenSMIME.STATUS_EXPERT_WRONG_STRING;
             }
         } else {
             int vname = validateName(name);
-            if (vname != SMileCrypto.STATUS_NAME_OK) {
+            if (vname != OpenSMIME.STATUS_NAME_OK) {
                 return vname;
             }
 
             int vemail = validateEmail(email);
-            if (vemail != SMileCrypto.STATUS_EMAIL_OK) {
+            if (vemail != OpenSMIME.STATUS_EMAIL_OK) {
                 return vemail;
             }
 
@@ -180,15 +180,15 @@ public class SelfSignedCertificateCreator {
             X509Certificate certificate = certificateConverter.getCertificate(certificateHolder);
             KeyManagement km = KeyManagement.getInstance();
             if(km.addPrivateKeyFromCert(certificate, pair.getPrivate(), passphrase)) {
-                return SMileCrypto.STATUS_SAVED_CERT;
+                return OpenSMIME.STATUS_SAVED_CERT;
             } else {
-                return SMileCrypto.STATUS_FAILED_SAVE_CERT;
+                return OpenSMIME.STATUS_FAILED_SAVE_CERT;
             }
         } catch (NoSuchAlgorithmException | NoSuchProviderException | OperatorCreationException | InvalidAlgorithmParameterException | CertificateException | KeyStoreException | IOException e) {
-            if(SMileCrypto.isDEBUG()) {
-                Log.d(SMileCrypto.LOG_TAG, "Error creating self signed certificate. " + e.getMessage());
+            if(OpenSMIME.isDEBUG()) {
+                Log.d(OpenSMIME.LOG_TAG, "Error creating self signed certificate. " + e.getMessage());
             }
-            return SMileCrypto.STATUS_FAILED_SAVE_CERT;
+            return OpenSMIME.STATUS_FAILED_SAVE_CERT;
         }
     }
 }

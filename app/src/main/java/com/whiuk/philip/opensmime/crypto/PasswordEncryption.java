@@ -16,7 +16,7 @@ import javax.crypto.CipherOutputStream;
 
 import com.whiuk.philip.opensmime.App;
 import com.whiuk.philip.opensmime.R;
-import com.whiuk.philip.opensmime.SMileCrypto;
+import com.whiuk.philip.opensmime.OpenSMIME;
 
 public class PasswordEncryption {
     public PasswordEncryption() {
@@ -47,8 +47,8 @@ public class PasswordEncryption {
 
             return Base64.encodeToString(outputStream.toByteArray(), Base64.DEFAULT);
         } catch (Exception e) {
-            if(SMileCrypto.isDEBUG()) {
-                Log.e(SMileCrypto.LOG_TAG, Log.getStackTraceString(e));
+            if(OpenSMIME.isDEBUG()) {
+                Log.e(OpenSMIME.LOG_TAG, Log.getStackTraceString(e));
             }
             return null;
         }
@@ -88,8 +88,8 @@ public class PasswordEncryption {
 
             return new String(bytes, 0, bytes.length, "UTF-8");
         } catch (Exception e) {
-            if(SMileCrypto.isDEBUG()) {
-                Log.e(SMileCrypto.LOG_TAG, Log.getStackTraceString(e));
+            if(OpenSMIME.isDEBUG()) {
+                Log.e(OpenSMIME.LOG_TAG, Log.getStackTraceString(e));
             }
             return null;
         }
