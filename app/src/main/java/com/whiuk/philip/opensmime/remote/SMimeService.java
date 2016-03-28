@@ -2,12 +2,15 @@ package com.whiuk.philip.opensmime.remote;
 
 import android.app.Service;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Binder;
 import android.os.IBinder;
 import android.os.ParcelFileDescriptor;
 import android.os.RemoteException;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import org.openintents.smime.util.SMimeError;
 import org.spongycastle.cms.CMSException;
 import org.spongycastle.mail.smime.SMIMEException;
 import org.spongycastle.operator.OperatorCreationException;
@@ -24,6 +27,7 @@ import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 import com.whiuk.philip.opensmime.OpenSMIME;
+import com.whiuk.philip.opensmime.crypto.CheckPermission;
 import com.whiuk.philip.opensmime.crypto.KeyManagement;
 import com.whiuk.philip.opensmime.remote.operation.CryptoOperation;
 import org.openintents.smime.ISMimeService;
@@ -36,9 +40,14 @@ public class SMimeService extends Service {
 
     private Map<Long, ParcelFileDescriptor> mOutputPipeMap = new HashMap<Long, ParcelFileDescriptor>();
 
+    private long createKey(int id) {
+        int callingPid = Binder.getCallingPid();
+        return ((long) callingPid << 32) | ((long) id & 0xFFFFFFFL);
+    }
+
     private final ISMimeService.Stub mBinder = new ISMimeService.Stub() {
         @Override
-        public ParcelFileDescriptor createOutputPipe(int pipeId) throws RemoteException {
+        public ParcelFileDescriptor createOutputPipe(int outputPipeId) throws RemoteException {
 
             try {
                 ParcelFileDescriptor[] pipe = ParcelFileDescriptor.createPipe();
@@ -51,7 +60,10 @@ public class SMimeService extends Service {
         }
 
         @Override
-        public Intent execute(Intent data, ParcelFileDescriptor input, int pipeId) throws RemoteException {
+        public Intent execute(Intent data, ParcelFileDescriptor input, int outputPipeId) throws RemoteException {
+            long key = createKey(outputPipeId);
+            ParcelFileDescriptor output = mOutputPipeMap.get(key);
+            mOutputPipeMap.remove(key);
             return processRequest(data, input, output);
         }
     };
@@ -80,6 +92,9 @@ public class SMimeService extends Service {
             cryptoOperationBuilder.setOutput(output);
 
             switch (action) {
+                case SMimeApi.ACTION_CHECK_PERMISSION: {
+                    return checkPermission();
+                }
                 case SMimeApi.ACTION_SIGN:
                     operation = cryptoOperationBuilder.createSignOperation();
                     break;
@@ -125,6 +140,39 @@ public class SMimeService extends Service {
             }
         }
 
+        return result;
+    }
+
+    private Intent checkPermission() {
+        CheckPermission checkPermission = new CheckPermission(getApplicationContext());
+        Intent result = new Intent();
+
+        try {
+            if (checkPermission.checkPermission()) {
+                result.putExtra(SMimeApi.RESULT_CODE, SMimeApi.RESULT_CODE_SUCCESS);
+                return result;
+            } else {
+                return permissionRequired();
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+            Log.e(OpenSMIME.LOG_TAG, "Should not happen, returning!", e);
+            // return error
+            result.putExtra(SMimeApi.RESULT_CODE, SMimeApi.RESULT_CODE_ERROR);
+            result.putExtra(SMimeApi.RESULT_ERROR,
+                    new SMimeError(SMimeError.GENERIC_ERROR, e.getMessage()));
+            return result;
+        } catch (CheckPermission.WrongPackageCertificateException e) {
+            return permissionRequired();
+        }
+    }
+
+    private Intent permissionRequired() {
+        Intent result = new Intent();
+//      return PendingIntent to be executed by client
+//      PendingIntent pi = piFactory.createRegisterPendingIntent(data,
+//      packageName, packageCertificate);
+        result.putExtra(SMimeApi.RESULT_CODE, SMimeApi.RESULT_CODE_USER_INTERACTION_REQUIRED);
+//      result.putExtra(SMimeApi.RESULT_INTENT, pi);
         return result;
     }
 

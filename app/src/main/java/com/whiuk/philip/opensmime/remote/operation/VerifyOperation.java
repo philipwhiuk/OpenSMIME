@@ -17,7 +17,7 @@ import java.security.cert.CertificateException;
 
 import com.whiuk.philip.opensmime.crypto.CryptoParams;
 import com.whiuk.philip.opensmime.crypto.VerifyMail;
-import org.openintents.smime.SMimeApi;
+import org.openintents.smime.util.SMimeApi;
 import korex.mail.MessagingException;
 import korex.mail.internet.AddressException;
 import korex.mail.internet.MimeBodyPart;

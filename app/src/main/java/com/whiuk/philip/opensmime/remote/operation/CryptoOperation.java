@@ -1,5 +1,6 @@
 package com.whiuk.philip.opensmime.remote.operation;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Environment;
@@ -36,7 +37,7 @@ import com.whiuk.philip.opensmime.crypto.CryptoParamsLoaderTask;
 import com.whiuk.philip.opensmime.crypto.KeyManagement;
 import com.whiuk.philip.opensmime.remote.AbstractContentLoaderTaskBuilder;
 import com.whiuk.philip.opensmime.remote.ContentLoaderTask;
-import org.openintents.smime.SMimeApi;
+import org.openintents.smime.util.SMimeApi;
 import korex.mail.MessagingException;
 import korex.mail.internet.AddressException;
 import korex.mail.internet.InternetAddress;

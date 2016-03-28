@@ -20,6 +20,6 @@
         android:paddingStart="12dp"
         android:paddingTop="4dp"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="@string/hello_world"
+        android:text=""
         android:id="@+id/rowText" />
 </LinearLayout>

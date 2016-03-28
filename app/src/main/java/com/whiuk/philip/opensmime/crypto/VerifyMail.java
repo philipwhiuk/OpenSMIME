@@ -60,7 +60,7 @@ import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
 import com.whiuk.philip.opensmime.OpenSMIME;
-import org.openintents.smime.SMimeApi;
+import org.openintents.smime.util.SMimeApi;
 import korex.mail.internet.MimeBodyPart;
 import korex.mail.internet.MimeMultipart;
 

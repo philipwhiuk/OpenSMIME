@@ -48,6 +48,6 @@
         android:layout_height="wrap_content"
         android:layout_toEndOf="@id/valid_circle_4"
         android:paddingStart="4dp"
-        android:text="@string/hello_world"
+        android:text=""
         android:textSize="13sp" />
 </RelativeLayout>
