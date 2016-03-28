@@ -33,7 +33,7 @@ public class PopupMenuClickListener implements PopupMenu.OnMenuItemClickListener
     @Override
     public boolean onMenuItemClick(MenuItem item) {
         int id = item.getItemId();
-        boolean own = keyInfo.getAlias().startsWith(OpenSMIME.KEY_PREFIX);
+        boolean own = keyInfo.getAlias().startsWith(OpenSMIME.KEY_PREFIX_OWN);
         if (id == R.id.delete) {
             keyAdapter.deleteCertificate(keyInfo);
         } else if (id == R.id.export) {
