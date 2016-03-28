@@ -131,7 +131,7 @@
     <string name="internal_error">An internal error occurred. Sorry for that. Please check the logfile.</string>
     <string name="error_reading_certificate">An error occurred while extracting the certificate from the selected file.</string>
     <string name="unknown_filetype">Selected file has an unknown filetype.</string>
-    <string name="smile_save_passphrases_certificate_alias">smile-save-passphrases-certificate</string>
+    <string name="opensmime_save_passphrases_certificate_alias">opensmime-save-passphrases-certificate</string>
     <string name="smime_certificates_folder">smime-certificates</string>
     <string name="save_encrypted_mime_message">Save encrypted MimeMessage</string>
     <string name="no_mime_message_saved">No MimeMessage was saved.</string>

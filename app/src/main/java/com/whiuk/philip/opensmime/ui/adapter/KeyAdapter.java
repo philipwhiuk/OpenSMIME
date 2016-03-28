@@ -56,7 +56,7 @@ import com.whiuk.philip.opensmime.ui.activity.DisplayCertificateInformationActiv
 import com.whiuk.philip.opensmime.ui.listener.DeleteRevealListener;
 import com.whiuk.philip.opensmime.ui.listener.ExecuteSwipe;
 import com.whiuk.philip.opensmime.ui.listener.ShareRevealListener;
-import com.whiuk.philip.opensmime.ui.listener.onClickCreatePopup;
+import com.whiuk.philip.opensmime.ui.listener.PopupMenuClickListener;
 import com.whiuk.philip.opensmime.utilities.KeyListCallback;
 import com.whiuk.philip.opensmime.utilities.Utils;
 
@@ -228,7 +228,7 @@ public class KeyAdapter extends RecyclerSwipeAdapter<KeyAdapter.KeyViewHolder> i
             }
         });
 
-        holder.contextButton.setOnClickListener(new onClickCreatePopup(this, keyInfo));
+        holder.contextButton.setOnClickListener(new PopupMenuClickListener(this, keyInfo));
 
         holder.swipe.removeSwipeListener(holder.swipeListener);
 

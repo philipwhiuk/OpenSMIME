@@ -56,7 +56,7 @@
             android:process=":remote_api"
             tools:ignore="ExportedService" >
             <intent-filter>
-                <action android:name="de.fau.cs.mad.ISMimeService" />
+                <action android:name="org.openintents.smime.ISMimeService" />
             </intent-filter>
         </service>
 

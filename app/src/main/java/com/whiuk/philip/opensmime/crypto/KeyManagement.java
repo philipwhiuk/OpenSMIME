@@ -209,7 +209,7 @@ public class KeyManagement {
     public Boolean addFriendsCertificate(X509Certificate certificate) {
         try {
             String thumbprint = getThumbprint(certificate);
-            String alias = "SMile_crypto_other_" + thumbprint;
+            String alias = OpenSMIME.KEY_PREFIX_OTHER + thumbprint;
             if(OpenSMIME.isDEBUG()) {
                 Log.d(OpenSMIME.LOG_TAG, "Check whether certificate is stored for alias: " + alias);
             }
@@ -221,7 +221,7 @@ public class KeyManagement {
             }
 
             //Check whether cert is already there because it's our own (= have private key)
-            if (androidKeyStore.containsAlias("SMile_crypto_own_" + thumbprint)) {
+            if (androidKeyStore.containsAlias(OpenSMIME.KEY_PREFIX_OWN + thumbprint)) {
                 OpenSMIME.EXIT_STATUS = OpenSMIME.STATUS_CERTIFICATE_ALREADY_IMPORTED;
                 return true;
             }
@@ -275,7 +275,7 @@ public class KeyManagement {
                 if(OpenSMIME.isDEBUG()) {
                     Log.d(OpenSMIME.LOG_TAG, "Found certificate with alias: " + alias);
                 }
-                if (alias.equals(App.getContext().getString(R.string.smile_save_passphrases_certificate_alias))) {
+                if (alias.equals(App.getContext().getString(R.string.opensmime_save_passphrases_certificate_alias))) {
                     continue;
                 }
 
@@ -617,7 +617,7 @@ public class KeyManagement {
         String filename = alias + ".p12";
         File src = new File(certDirectory, filename);
 
-        File dstDirectory = new File(Environment.getExternalStorageDirectory(), "SMileCE/export/");
+        File dstDirectory = new File(Environment.getExternalStorageDirectory(), "OpenSMIME/export/");
         dstDirectory.mkdirs(); // create folder if it does not exist yet
 
         File dst = new File(dstDirectory, filename);
@@ -643,7 +643,7 @@ public class KeyManagement {
         }
 
         String filename = alias + ".crt";
-        File dstDirectory = new File(Environment.getExternalStorageDirectory(), "SMileCE/export/");
+        File dstDirectory = new File(Environment.getExternalStorageDirectory(), "OpenSMIME/export/");
         dstDirectory.mkdirs(); // create folder if it does not exist yet
 
         File dst = new File(dstDirectory, filename);
@@ -673,7 +673,7 @@ public class KeyManagement {
                 Log.d(OpenSMIME.LOG_TAG, "Import certificate to keyStore.");
             }
 
-            String alias = "SMile_crypto_own_" + getThumbprint(certificate);
+            String alias = OpenSMIME.KEY_PREFIX_OWN + getThumbprint(certificate);
             //Check whether cert is already there
             if (androidKeyStore.containsAlias(alias)) {
                 if(OpenSMIME.isDEBUG()) {

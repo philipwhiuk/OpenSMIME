@@ -338,7 +338,7 @@ public class DisplayCertificateInformationActivity extends ActionBarActivity {
         }
 
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-        if (keyInfo.getAlias().startsWith("SMile_crypto_own")) {
+        if (keyInfo.getAlias().startsWith(OpenSMIME.KEY_PREFIX_OWN)) {
             alertDialogBuilder.setTitle(getString(R.string.alert_header_start) + keyInfo.getContact() + getString(R.string.alert_header_end));
             alertDialogBuilder
                     .setMessage(getString(R.string.alert_content))

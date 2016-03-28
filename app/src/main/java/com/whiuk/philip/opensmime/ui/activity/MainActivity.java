@@ -42,7 +42,7 @@ public class MainActivity extends ActionBarActivity {
 
     private ImageButton fab;
 
-    // Name and email in HeaderView -- TODO: for SMile-UI -> get from resources
+    // Name and email in HeaderView -- TODO: for OpenSMIME-UI -> get from resources
     String mName;
     String mEmail;
     //titles and icons for ListView

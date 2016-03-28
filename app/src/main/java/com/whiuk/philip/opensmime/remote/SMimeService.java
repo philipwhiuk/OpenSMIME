@@ -95,6 +95,9 @@ public class SMimeService extends Service {
                 case SMimeApi.ACTION_CHECK_PERMISSION: {
                     return checkPermission();
                 }
+                case SMimeApi.ACTION_GET_SIGN_CERTIFICATE_ID: {
+//TODO:                    return checkPermission();
+                }
                 case SMimeApi.ACTION_SIGN:
                     operation = cryptoOperationBuilder.createSignOperation();
                     break;

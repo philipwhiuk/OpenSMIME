@@ -6,17 +6,18 @@ import android.widget.PopupMenu;
 
 import com.whiuk.philip.opensmime.App;
 import com.whiuk.philip.opensmime.KeyInfo;
+import com.whiuk.philip.opensmime.OpenSMIME;
 import com.whiuk.philip.opensmime.R;
 import com.whiuk.philip.opensmime.ui.adapter.KeyAdapter;
 
 /**
  * Click listener for popup menu.
  */
-public class onClickCreatePopup implements PopupMenu.OnMenuItemClickListener, View.OnClickListener {
+public class PopupMenuClickListener implements PopupMenu.OnMenuItemClickListener, View.OnClickListener {
     private KeyAdapter keyAdapter;
     private KeyInfo keyInfo;
 
-    public onClickCreatePopup(KeyAdapter keyAdapter, KeyInfo keyInfo) {
+    public PopupMenuClickListener(KeyAdapter keyAdapter, KeyInfo keyInfo) {
         this.keyAdapter = keyAdapter;
         this.keyInfo = keyInfo;
     }
@@ -32,7 +33,7 @@ public class onClickCreatePopup implements PopupMenu.OnMenuItemClickListener, Vi
     @Override
     public boolean onMenuItemClick(MenuItem item) {
         int id = item.getItemId();
-        boolean own = keyInfo.getAlias().startsWith("SMile_crypto_own");
+        boolean own = keyInfo.getAlias().startsWith(OpenSMIME.KEY_PREFIX);
         if (id == R.id.delete) {
             keyAdapter.deleteCertificate(keyInfo);
         } else if (id == R.id.export) {

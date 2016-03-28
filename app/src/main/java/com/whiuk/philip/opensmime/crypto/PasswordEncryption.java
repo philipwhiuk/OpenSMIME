@@ -26,7 +26,7 @@ public class PasswordEncryption {
         try {
             KeyStore keyStore = KeyStore.getInstance("AndroidKeyStore");
             keyStore.load(null);
-            String passwordEncryptionCertificateAlias = App.getContext().getResources().getString(R.string.smile_save_passphrases_certificate_alias);
+            String passwordEncryptionCertificateAlias = App.getContext().getResources().getString(R.string.opensmime_save_passphrases_certificate_alias);
 
             if (!keyStore.containsAlias(passwordEncryptionCertificateAlias)) {
                 return null;
@@ -58,7 +58,7 @@ public class PasswordEncryption {
         try {
             KeyStore keyStore = KeyStore.getInstance("AndroidKeyStore");
             keyStore.load(null);
-            String passwordEncryptionCertificateAlias = App.getContext().getResources().getString(R.string.smile_save_passphrases_certificate_alias);
+            String passwordEncryptionCertificateAlias = App.getContext().getResources().getString(R.string.opensmime_save_passphrases_certificate_alias);
 
             if (!keyStore.containsAlias(passwordEncryptionCertificateAlias)) {
                 return null;

@@ -12,6 +12,9 @@ public class OpenSMIME extends Application {
 
     public static Application app = null;
     public static final String LOG_TAG = "OpenSMIME";
+    public static final String KEY_PREFIX_OWN = "OpenSMIME_crypto_own";
+    public static final String KEY_PREFIX_OTHER = "OpenSMIME_crypto_other";
+
 
     public static int EXIT_STATUS;
 

@@ -47,7 +47,7 @@ public class App extends Application {
 
     private void generateKeyPair() {
         /* When app starts first, create certificate for PasswordEncryption. */
-        String passwordEncryptionCertificateAlias = getResources().getString(R.string.smile_save_passphrases_certificate_alias);
+        String passwordEncryptionCertificateAlias = getResources().getString(R.string.opensmime_save_passphrases_certificate_alias);
 
         try {
             KeyStore keyStore = KeyStore.getInstance("AndroidKeyStore");
@@ -63,7 +63,7 @@ public class App extends Application {
 
             final KeyPairGeneratorSpec spec = new KeyPairGeneratorSpec.Builder(mContext)
                     .setAlias(passwordEncryptionCertificateAlias)
-                    .setSubject(new X500Principal("CN=SMile-crypto-Password-Encrypt"))
+                    .setSubject(new X500Principal("CN=OpenSMIME-crypto-Password-Encrypt"))
                     .setSerialNumber(BigInteger.ONE)
                     .setStartDate(start.getTime())
                     .setEndDate(end.getTime())
